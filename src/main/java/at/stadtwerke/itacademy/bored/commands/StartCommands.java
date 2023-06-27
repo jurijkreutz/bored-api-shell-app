@@ -1,10 +1,10 @@
-package at.stadtwerke.itacademy.bored;
+package at.stadtwerke.itacademy.bored.commands;
 
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
 @ShellComponent
-public class MyStartCommands {
+public class StartCommands {
 
     @ShellMethod("Greet the user.")
     public String hello() {
