@@ -1,24 +1,26 @@
 package at.stadtwerke.itacademy.bored.commands;
 
-import at.stadtwerke.itacademy.bored.client.BoredApiClient;
-import at.stadtwerke.itacademy.bored.model.Activity;
+import at.stadtwerke.itacademy.bored.service.BoredApiService;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
 @ShellComponent
 public class BoredApiCommands {
 
-    private final BoredApiClient boredApiClient;
+    private final BoredApiService boredApiService;
 
-    public BoredApiCommands(BoredApiClient boredApiClient) {
-        this.boredApiClient = boredApiClient;
+    public BoredApiCommands(BoredApiService boredApiService) {
+        this.boredApiService = boredApiService;
     }
 
-    @ShellMethod("Get simple activity.")
+    @ShellMethod("Get activity block.")
     public String getActivity() {
-        Activity activity = boredApiClient.getSimpleActivity().block();
-        assert activity != null;
-        return activity.getActivity();
+        return boredApiService.getActivityBlock();
+    }
+
+    @ShellMethod("Get simple activity text.")
+    public String getSimpleActivity() {
+        return boredApiService.getActivityText();
     }
 
 }
