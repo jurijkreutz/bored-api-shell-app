@@ -3,6 +3,7 @@ package at.stadtwerke.itacademy.bored.commands;
 import at.stadtwerke.itacademy.bored.service.BoredApiService;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import org.springframework.shell.standard.ShellOption;
 
 @ShellComponent
 public class BoredApiCommands {
@@ -20,7 +21,7 @@ public class BoredApiCommands {
 
     @ShellMethod("Get activity by type. [\"education\", \"recreational\", \"social\", \"diy\"," +
             "\"charity\", \"cooking\", \"relaxation\", \"music\", \"busywork\"]")
-    public String getActivityByType(String type) {
+    public String getActivityByType(@ShellOption(valueProvider = ActivityCompletionsProvider.class) String type) {
         return boredApiService.getActivity(type);
     }
 

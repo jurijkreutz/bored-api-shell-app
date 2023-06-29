@@ -4,7 +4,7 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
 @ShellComponent
-public class StartCommands {
+public class CustomCommands {
 
     @ShellMethod("Greet the user.")
     public String hello() {
