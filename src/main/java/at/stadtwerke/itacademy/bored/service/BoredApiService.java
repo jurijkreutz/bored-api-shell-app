@@ -15,8 +15,17 @@ public class BoredApiService {
         this.boredApiClient = boredApiClient;
     }
 
-    public String getActivityBlock() {
+    public String getActivity() {
         Activity activity = boredApiClient.getSimpleActivity().block();
+        return createActivityBlock(activity);
+    }
+
+    public String getActivity(String type) {
+        Activity activity = boredApiClient.getActivityByType(type).block();
+        return createActivityBlock(activity);
+    }
+
+    public String createActivityBlock(Activity activity) {
         String activityText = "Activity: " + activity.getActivity();
         String linkText = "Link: " + activity.getLink();
         String typeText = "Type: " + activity.getType();

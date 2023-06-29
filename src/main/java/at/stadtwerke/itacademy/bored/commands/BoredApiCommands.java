@@ -15,7 +15,13 @@ public class BoredApiCommands {
 
     @ShellMethod("Get activity block.")
     public String getActivity() {
-        return boredApiService.getActivityBlock();
+        return boredApiService.getActivity();
+    }
+
+    @ShellMethod("Get activity by type. [\"education\", \"recreational\", \"social\", \"diy\"," +
+            "\"charity\", \"cooking\", \"relaxation\", \"music\", \"busywork\"]")
+    public String getActivityByType(String type) {
+        return boredApiService.getActivity(type);
     }
 
     @ShellMethod("Get simple activity text.")

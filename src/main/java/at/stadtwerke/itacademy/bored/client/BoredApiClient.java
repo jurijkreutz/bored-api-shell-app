@@ -21,4 +21,12 @@ public class BoredApiClient {
                 .retrieve()
                 .bodyToMono(Activity.class);
     }
+
+    public Mono<Activity> getActivityByType(String type) {
+        return webClient.get()
+                .uri("/activity?type=" + type).accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(Activity.class);
+    }
+
 }
