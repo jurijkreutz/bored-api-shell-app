@@ -17,10 +17,10 @@ public class Activity {
 
     private int participants;
 
-    private float price;
+    private double price;
 
     private String link;
 
-    private float accessibility;
+    private double accessibility;
 
 }

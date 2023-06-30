@@ -3,8 +3,10 @@ package at.stadtwerke.itacademy.bored.service;
 import at.stadtwerke.itacademy.bored.client.BoredApiClient;
 import at.stadtwerke.itacademy.bored.model.Activity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class BoredApiService {
@@ -16,16 +18,27 @@ public class BoredApiService {
     }
 
     public String getActivity() {
-        Activity activity = boredApiClient.getSimpleActivity().block();
-        return createActivityBlock(activity);
+        try {
+            Optional<Activity> activity = boredApiClient.getSimpleActivity().blockOptional();
+            return activity.map(this::createActivityBlock).orElse("Error: BoredApi didn't send an activity.");
+        } catch (WebClientResponseException error) {
+            return "Web Client Error: Try again later. - " + error.getStatusCode();
+        }
     }
 
     public String getActivity(String type) {
-        Activity activity = boredApiClient.getActivityByType(type).block();
-        return createActivityBlock(activity);
+        try {
+            Optional<Activity> activity = boredApiClient.getActivityByType(type).blockOptional();
+            return activity.map(this::createActivityBlock).orElse("Error: BoredApi didn't send an activity.");
+        } catch (WebClientResponseException error) {
+            return "Web Client Error: Try again later. - " + error.getStatusCode();
+        }
     }
 
-    public String createActivityBlock(Activity activity) {
+    private String createActivityBlock(Activity activity) {
+        if (activity.getActivity() == null || activity.getActivity().equals("")) {
+            return "Error: The activity String is empty.";
+        }
         String activityText = "Activity: " + activity.getActivity();
         String linkText = "Link: " + activity.getLink();
         String typeText = "Type: " + activity.getType();
@@ -37,7 +50,7 @@ public class BoredApiService {
         StringBuilder activityBlock = new StringBuilder("/-" + "-".repeat(maxLength) + "-\\" + "\n");
         addLine(activityBlock, maxLength, "| ", activityText, " |");
         addLine(activityBlock, maxLength, "| ", typeText, " |");
-        if (!Objects.equals(activity.getLink(), "")) {
+        if (!Objects.equals(activity.getLink(), "") && !Objects.equals(activity.getLink(), null)) {
             addLine(activityBlock, maxLength, "| ", linkText, " |");
         }
         addLine(activityBlock, maxLength, "| ", participantsText, " |");
@@ -64,8 +77,20 @@ public class BoredApiService {
     }
 
     public String getActivityText() {
-        Activity activity = boredApiClient.getSimpleActivity().block();
-        return "Activity Idea: " + activity.getActivity();
+        try {
+            Optional<Activity> activity = boredApiClient.getSimpleActivity().blockOptional();
+            if (activity.isPresent()) {
+                if (activity.get().getActivity() == null || activity.get().getActivity().equals("")) {
+                    return "Error: The activity String is empty.";
+                }
+                return "Activity Idea: " + activity.get().getActivity();
+            }
+            else {
+                return "Error: BoredApi didn't send an activity.";
+            }
+        } catch (WebClientResponseException error) {
+            return "Web Client Error: Try again later. - " + error.getStatusCode();
+        }
     }
 
 }
