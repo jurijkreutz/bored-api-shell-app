@@ -35,6 +35,7 @@ public class BoredApiCommandsTest {
         String result = boredApiCommands.getActivity();
 
         Assertions.assertEquals(expected, result);
+        Mockito.verify(mockService).getActivity();
     }
 
     @Test
@@ -54,6 +55,7 @@ public class BoredApiCommandsTest {
         String result = boredApiCommands.getActivityByType("recreational");
 
         Assertions.assertEquals(expected, result);
+        Mockito.verify(mockService).getActivity("recreational");
     }
 
     @Test
@@ -64,6 +66,7 @@ public class BoredApiCommandsTest {
         String result = boredApiCommands.getSimpleActivity();
 
         Assertions.assertEquals(expected, result);
+        Mockito.verify(mockService).getActivityText();
     }
 
 }
