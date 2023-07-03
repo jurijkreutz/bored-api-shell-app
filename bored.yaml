@@ -1,0 +1,97 @@
+openapi: 3.0.1
+info:
+  title: BoredAPI
+  description: The Bored API helps you find things to do when you're bored! There are fields like the number of participants, activity type, and more that help you narrow down your results.
+  version: 1.0.0
+servers:
+  - url: "https://www.boredapi.com/api"
+tags:
+  - name: activity
+    description: Everything about activities
+paths:
+  /activity:
+    get:
+      tags:
+        - activity
+      summary: Get an event
+      parameters:
+        - in: query
+          name: key
+          required: false
+          schema:
+            type: integer
+          description: Key of a specific activity (optional)
+          example: https://www.boredapi.com/api/activity?key=5881028
+        - in: query
+          name: type
+          required: false
+          schema:
+            type: string
+            enum: 
+              - education
+              - recreational
+              - social
+              - diy
+              - charity
+              - cooking
+              - relaxation
+              - music
+              - busywork
+          description: Find a random activity with a given type (optional)
+          example: https://www.boredapi.com/api/activity?type=recreational
+        - in: query
+          name: participants
+          required: false
+          schema:
+            type: integer
+          description: Find a random activity with a given number of participants (optional)
+          example: https://www.boredapi.com/api/activity?participants=1
+        - in: query
+          name: price
+          required: false
+          schema:
+            type: number
+          description: Find an activity with a specified price (optional)
+          example: https://www.boredapi.com/api/activity?price=0.0
+        - in: query
+          name: accessibility
+          required: false
+          schema:
+            type: number
+          description: Find an event with a specified accessibility (optional)
+          example: https://www.boredapi.com/api/activity?accessibility=1
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Activity'           
+        '400':
+          description: Not found
+components:
+  schemas:
+    Activity:
+      type: object
+      properties:
+        activity:
+          type: string
+          example: Go fishing
+        accessibility:
+          type: number
+          example: 0.1
+        type:
+          type: string
+          example: recreation
+        participants:
+          type: integer
+          example: 3
+        price:
+          type: number
+          example: 30.5
+        link:
+          type: string
+          example: https://google.at
+        key:
+          type: integer
+          example: 25436812
